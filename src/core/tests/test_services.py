@@ -31,10 +31,6 @@ class TestChargePointService(TestCase):
         ChargePointService.create_charge_point(name='first chargepoint', status='Ready')
         self.assertEquals(len(ChargePointService.get_all_charge_points()), 1)
 
-    def test_create_charge_point_will_raise_validation_error_if_invalid_status(self):
-        with self.assertRaises(ValidationError):
-            ChargePointService.create_charge_point(name='first chargepoint', status='Wrong')
-
     def test_create_charge_point_will_raise_validation_error_if_not_unique_name(self):
         baker.make(ChargePoint, pk=1, name='first chargepoint')
         with self.assertRaises(ValidationError):

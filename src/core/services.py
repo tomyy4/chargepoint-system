@@ -16,14 +16,21 @@ class ChargePointService:
         return ChargePoint.objects.get(pk=charge_point_id)
 
     @staticmethod
-    def create_charge_point(name=None):
+    def create_charge_point(name, status):
         charge_point = ChargePoint.objects.filter(name=name)
 
         if charge_point.exists():
             raise ValidationError('A ChargePoint with that name exists')
 
-        charge_point = ChargePoint.objects.create(name=name)
-        return charge_point
+        ChargePointService.validate_status(status)
+
+        ChargePoint.objects.create(name=name, status=status)
+
+    @staticmethod
+    def validate_status(status):
+        available_status = [s.value for s in Status]
+        if status not in available_status:
+            raise ValidationError(f'Status {status} is not a valid option')
 
     @staticmethod
     def update_charge_point(charge_point_id, name=None, status=None):
@@ -33,12 +40,9 @@ class ChargePointService:
             charge_point.name = name
 
         if status:
-            available_status = [s.value for s in Status]
-            if status not in available_status:
-                raise ValidationError(f'Status {status} is not a valid option')
+            ChargePointService.validate_status(status)
 
-        charge_point.status = status
-
+            charge_point.status = status
         charge_point.save()
 
     @staticmethod

@@ -37,6 +37,7 @@ class TestChargeSerializerListView(TestCase):
         assert len(result) == 3
 
     def test_charge_point_list_view_serialized_data(self):
+        baker.make(ChargePoint, pk=1, name='first charge point', status='Ready')
         response = self.client.get(reverse('charge_point_list'))
         result = response.json()
         assert result[0].get('name') == 'first charge point'

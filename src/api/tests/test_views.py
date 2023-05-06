@@ -45,11 +45,13 @@ class TestChargeSerializerListView(TestCase):
         assert result[0].get('deleted_at') is None
 
     def test_charge_point_list_view_wont_list_deleted_at_charge_points(self):
+        deleted_charge_point = baker.make(ChargePoint, pk=1, deleted_at=datetime.now())
+
         baker.make(ChargePoint, _quantity=3)
-        baker.make(ChargePoint, deleted_at=datetime.now())
         response = self.client.get(reverse('charge_point_list'))
         result = response.json()
         assert len(result) == 3
+        assert deleted_charge_point not in result
 
     @patch('api.views.ChargePointService')
     def test_charge_point_list_view_will_call_service_get_all_charge_points(self, mock_service):

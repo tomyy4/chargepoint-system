@@ -29,7 +29,7 @@ class TestDeleteChargePointView(TestCase):
         mock_service.delete_charge_point.assert_called_once_with(charge_point_id=1)
 
 
-class TestChargeSerializerListView(TestCase):
+class TestChargePointListView(TestCase):
     def test_charge_point_list_view(self):
         baker.make(ChargePoint, _quantity=3)
         response = self.client.get(reverse('charge_point_list'))

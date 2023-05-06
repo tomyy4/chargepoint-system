@@ -17,14 +17,17 @@ class ChargePointService:
 
     @staticmethod
     def create_charge_point(name, status):
-        charge_point = ChargePoint.objects.filter(name=name)
-
-        if charge_point.exists():
-            raise ValidationError('A ChargePoint with that name exists')
+        ChargePointService.validate_charge_point_existance(name)
 
         ChargePointService.validate_status(status)
 
         ChargePoint.objects.create(name=name, status=status)
+
+    @staticmethod
+    def validate_charge_point_existance(name):
+        charge_point = ChargePoint.objects.filter(name=name)
+        if charge_point.exists():
+            raise ValidationError('A ChargePoint with that name exists')
 
     @staticmethod
     def validate_status(status):
@@ -34,6 +37,8 @@ class ChargePointService:
 
     @staticmethod
     def update_charge_point(charge_point_id, name=None, status=None):
+        ChargePointService.validate_charge_point_existance(name)
+
         charge_point = ChargePoint.objects.get(pk=charge_point_id)
 
         if name:

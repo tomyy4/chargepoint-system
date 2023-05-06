@@ -54,8 +54,8 @@ class ChargePointEdit(APIView):
             try:
                 ChargePointService.update_charge_point(
                     charge_point_id=pk,
-                    name=request.POST.get('name'),
-                    status=request.POST.get('status'))
+                    name=request.data.get('name'),
+                    status=request.data.get('status'))
                 return Response(status=status.HTTP_200_OK)
             except ValidationError as error:
                 return Response({'error': str(error)}, status=status.HTTP_400_BAD_REQUEST)

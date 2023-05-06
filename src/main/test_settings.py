@@ -1,3 +1,5 @@
+import sys
+
 import environ
 from pathlib import Path
 import os
@@ -76,12 +78,8 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': env('DATABASE_ENGINE', default=None),
-        'NAME': env('DATABASE_NAME', default=None),
-        'USER': env('DATABASE_USER', default=None),
-        'PASSWORD': env('DATABASE_PASSWORD', default=None),
-        'HOST': env('DATABASE_HOST', default=None),
-        'PORT': env('DATABASE_PORT', default=None),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

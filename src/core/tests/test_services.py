@@ -36,10 +36,17 @@ class TestChargePointService(TestCase):
         with self.assertRaises(ValidationError):
             ChargePointService.create_charge_point(name='first chargepoint', status='Ready')
 
+    def test_update_charge_point_name(self):
+        charge_point = baker.make(ChargePoint, pk=1, name='first chargepoint', status='Ready')
+        ChargePointService.update_charge_point(charge_point_id=charge_point.pk, name='second chargepoint')
+        charge = ChargePointService.get_charge_point(charge_point_id=charge_point.pk)
+        self.assertEquals(charge.name, 'second chargepoint')
+
     def test_update_charge_point_status(self):
         charge_point = baker.make(ChargePoint, pk=1, name='first chargepoint', status='Ready')
         ChargePointService.update_charge_point(charge_point_id=charge_point.pk, status='Waiting')
-        self.assertEquals(charge_point.status, 'Ready')
+        charge = ChargePointService.get_charge_point(charge_point_id=charge_point.pk)
+        self.assertEquals(charge.status, 'Waiting')
 
     def test_wont_update_charge_point_with_invalid_status(self):
         charge_point = baker.make(ChargePoint, pk=1, name='first chargepoint', status='Ready')

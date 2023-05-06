@@ -33,9 +33,19 @@ class TestApiViews(TestCase):
         assert result.get('name') == charge_point.name
         assert result.get('status') == charge_point.status
 
+    def test_charge_point_detail_view_will_raise_404_if_charge_point_does_not_exist(self):
+        baker.make(ChargePoint, pk=1, name='first charge point')
+        response = self.client.get(reverse('charge_point_detail', kwargs={'pk': 2}))
+        assert response.status_code == 404
+
     def test_charge_point_delete_view(self):
         charge_point = baker.make(ChargePoint, pk=1)
         response = self.client.delete(reverse('charge_point_delete', kwargs={'pk': charge_point.pk}))
         result = response.json()
         assert response.status_code == 200
         assert result.get('success') == 'Charge point set as deleted'
+
+    def test_charge_point_delete_view_will_raise_404_if_charge_point_does_not_exist(self):
+        baker.make(ChargePoint, pk=1)
+        response = self.client.delete(reverse('charge_point_delete', kwargs={'pk': 2}))
+        assert response.status_code == 404

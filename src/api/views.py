@@ -10,11 +10,6 @@ from core.models import ChargePoint
 from core.services import ChargePointService
 
 
-@api_view()
-def home_view(request):
-    return Response({'foo': 'bar'})
-
-
 class ChargePointList(APIView):
     def get(self, request):
         charge_points = ChargePointService.get_all_charge_points()

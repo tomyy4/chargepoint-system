@@ -1,19 +1,26 @@
-from rest_framework.exceptions import ValidationError
-from rest_framework.serializers import ModelSerializer
+from django.core.exceptions import ValidationError
+from rest_framework import serializers
 
 from core.models import ChargePoint
 
 
-class ChargePointSerializer(ModelSerializer):
+class ChargePointSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChargePoint
         fields = '__all__'
-        read_only_fields = ['pk', 'created_at', 'deleted_at']
 
-    def validate(self, data):
-        if not data.get('name'):
-            raise ValidationError('Name is required')
 
-        if not data.get('status'):
-            raise ValidationError('Status is required')
-        return data
+class CreateChargePointSerializer(serializers.Serializer):
+    name = serializers.CharField(required=True)
+    status = serializers.CharField(required=True)
+
+
+class UpdateChargePointSerializer(serializers.Serializer):
+    name = serializers.CharField(required=False)
+    status = serializers.CharField(required=False)
+
+    def validate(self, attrs):
+        if not attrs:
+            raise ValidationError('Please provide some value')
+
+        return attrs

@@ -4,7 +4,7 @@ from django.db import models
 class Status(models.TextChoices):
     READY = 'Ready', 'Ready'
     CHARGING = 'Charging', 'Charging'
-    PENDING = 'Waiting', 'Waiting'
+    WAITING = 'Waiting', 'Waiting'
     ERROR = 'Error', 'Error'
 
 

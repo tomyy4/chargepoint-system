@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialise environment variables
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(os.path.join(BASE_DIR.parent, '.env'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # Quick-start development settings - unsuitable for production
@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': env('DATABASE_NAME', default=None),
         'USER': env('DATABASE_USER', default=None),
         'PASSWORD': env('DATABASE_PASSWORD', default=None),
-        'HOST': env('DATABASE_HOST', default=None),
+        'HOST': env('DATABASE_HOST', default='db'),
         'PORT': env('DATABASE_PORT', default=None),
     }
 }

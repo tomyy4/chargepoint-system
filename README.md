@@ -2,9 +2,11 @@
 
 To run the project:
 
-1 - Create the .env file based on the env.template
+- Create the .env file based on the env.template
 
-2 - run docker-compose up
+If you are running docker, make sure to set the variables 
+in the file docker.env
+- run docker-compose up
 
 To run the tests:
 - python manage.py test --settings=main.test_settings

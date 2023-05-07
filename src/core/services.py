@@ -54,9 +54,11 @@ class ChargePointService:
     @staticmethod
     def delete_charge_point(charge_point_id):
         """
-        Mark ChargePoint as deleted by setting its 'deleted_at' field to the current time.
+        Mark ChargePoint as deleted by setting its 'deleted_at' field to the current time and Status
+        to Error
         """
         charge_point = ChargePoint.objects.get(pk=charge_point_id)
         charge_point.deleted_at = datetime.now()
+        charge_point.status = Status.ERROR
         charge_point.save()
 

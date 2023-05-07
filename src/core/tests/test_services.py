@@ -27,6 +27,12 @@ class TestChargePointService(TestCase):
         charge = ChargePointService.get_charge_point(charge_point_id=charge_point.pk)
         self.assertIsNotNone(charge.deleted_at)
 
+    def test_delete_charge_point_will_set_status_error(self):
+        charge_point = baker.make(ChargePoint, pk=1)
+        ChargePointService.delete_charge_point(charge_point_id=1)
+        charge = ChargePointService.get_charge_point(charge_point_id=charge_point.pk)
+        self.assertEquals(charge.status, 'Error')
+
     def test_create_charge_point(self):
         ChargePointService.create_charge_point(name='first chargepoint', status='Ready')
         self.assertEquals(len(ChargePointService.get_all_charge_points()), 1)

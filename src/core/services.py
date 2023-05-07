@@ -9,6 +9,9 @@ class ChargePointService:
 
     @staticmethod
     def get_all_charge_points():
+        """
+        Returns all ChargePoint objects that have not been marked as deleted.
+        """
         return ChargePoint.objects.filter(deleted_at__isnull=True)
 
     @staticmethod
@@ -17,14 +20,12 @@ class ChargePointService:
 
     @staticmethod
     def create_charge_point(name, status):
-        ChargePointService.validate_charge_point_existance(name)
-
+        ChargePointService.validate_charge_point_existence(name)
         ChargePointService.validate_status(status)
-
         ChargePoint.objects.create(name=name, status=status)
 
     @staticmethod
-    def validate_charge_point_existance(name):
+    def validate_charge_point_existence(name):
         charge_point = ChargePoint.objects.filter(name=name)
         if charge_point.exists():
             raise ValidationError('A ChargePoint with that name exists')
@@ -37,7 +38,7 @@ class ChargePointService:
 
     @staticmethod
     def update_charge_point(charge_point_id, name=None, status=None):
-        ChargePointService.validate_charge_point_existance(name)
+        ChargePointService.validate_charge_point_existence(name)
 
         charge_point = ChargePoint.objects.get(pk=charge_point_id)
 
@@ -52,6 +53,9 @@ class ChargePointService:
 
     @staticmethod
     def delete_charge_point(charge_point_id):
+        """
+        Mark ChargePoint as deleted by setting its 'deleted_at' field to the current time.
+        """
         charge_point = ChargePoint.objects.get(pk=charge_point_id)
         charge_point.deleted_at = datetime.now()
         charge_point.save()
